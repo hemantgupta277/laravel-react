@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 
 class ProjectController extends Controller
 {
 
-    public function index()
+    public function index(): Response|ResponseFactory
     {
+        $projects = Project::query()->paginate(5)->onEachSide(1);
+//        $project = Project::find(1);
+//        dd($project->createdBy);
         return inertia('Project/Index',[
-
+            'projects' => ProjectResource::collection($projects)
         ]);
     }
 
