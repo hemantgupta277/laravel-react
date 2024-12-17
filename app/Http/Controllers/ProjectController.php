@@ -14,9 +14,7 @@ class ProjectController extends Controller
 
     public function index(): Response|ResponseFactory
     {
-        $projects = Project::query()->paginate(5)->onEachSide(1);
-//        $project = Project::find(1);
-//        dd($project->createdBy);
+        $projects = Project::query()->paginate(10)->onEachSide(1);
         return inertia('Project/Index',[
             'projects' => ProjectResource::collection($projects)
         ]);

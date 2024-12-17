@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link} from '@inertiajs/react';
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({auth, projects}){
     return(
@@ -20,34 +21,36 @@ export default function Index({auth, projects}){
                             {/*<pre>{JSON.stringify(projects, undefined, 2)}</pre>*/}
                             <table className="w-full text-sm text-left text-gray-500 rtl:text-right">
                                 <thead className="text-xs bg-gray-50 text-gray-700 uppercase border-b-2">
-                                    <tr className="text-nowrap">
-                                        <th className="px-3 py-2">ID</th>
-                                        <th className="px-3 py-2">Image</th>
-                                        <th className="px-3 py-2">Name</th>
-                                        <th className="px-3 py-2">Status</th>
-                                        <th className="px-3 py-2">Create Date</th>
-                                        <th className="px-3 py-2">Due Date</th>
-                                        <th className="px-3 py-2">Created By</th>
-                                        <th className="px-3 py-2 text-right">Actions</th>
-                                    </tr>
+                                <tr className="text-nowrap">
+                                    <th className="px-3 py-2">ID</th>
+                                    <th className="px-3 py-2">Image</th>
+                                    <th className="px-3 py-2">Name</th>
+                                    <th className="px-3 py-2">Status</th>
+                                    <th className="px-3 py-2">Create Date</th>
+                                    <th className="px-3 py-2">Due Date</th>
+                                    <th className="px-3 py-2">Created By</th>
+                                    <th className="px-3 py-2 text-right">Actions</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {projects.data.map((project) => (
                                     <tr className="border-b">
                                         <td className="px-3 py-2">{project.id}</td>
                                         <td className="px-3 py-2">
-                                            <img src={project.image_path} style={{width:60}}/>
+                                            <img src={project.image_path} style={{width: 60}}/>
                                         </td>
                                         <td className="px-3 py-2">{project.name}</td>
                                         <td className="px-3 py-2">{project.status}</td>
-                                        <td className="px-3 py-2">{project.created_at}</td>
-                                        <td className="px-3 py-2">{project.due_date}</td>
+                                        <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
+                                        <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
                                         <td className="px-3 py-2">{project.createdBy.name}</td>
                                         <td className="px-3 py-2">
-                                            <Link href={route('project.edit', project.id)} className="text-blue-600 mx-1 hover:underline">
+                                            <Link href={route('project.edit', project.id)}
+                                                  className="text-blue-600 mx-1 hover:underline">
                                                 Edit
                                             </Link>
-                                            <Link href={route('project.destroy', project.id)} className="text-red-600 mx-1 hover:underline">
+                                            <Link href={route('project.destroy', project.id)}
+                                                  className="text-red-600 mx-1 hover:underline">
                                                 Delete
                                             </Link>
                                         </td>
@@ -55,6 +58,8 @@ export default function Index({auth, projects}){
                                 ))}
                                 </tbody>
                             </table>
+                            {/*<pre>{JSON.stringify(projects.meta.links, undefined, 2)}</pre>*/}
+                            <Pagination links={projects.meta.links}/>
                         </div>
                     </div>
                 </div>
