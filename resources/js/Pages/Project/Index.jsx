@@ -1,6 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link} from '@inertiajs/react';
 import Pagination from "@/Components/Pagination.jsx";
+import {PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP} from "@/constants.jsx";
+import TextInput from "@/Components/TextInput.jsx";
+import SelectInput from "@/Components/SelectInput.jsx";
 
 export default function Index({auth, projects}){
     return(
@@ -32,15 +35,36 @@ export default function Index({auth, projects}){
                                     <th className="px-3 py-2 text-right">Actions</th>
                                 </tr>
                                 </thead>
+                                <thead className="text-xs bg-gray-50 text-gray-700 uppercase border-b-2">
+                                <tr className="text-nowrap">
+                                    <th className="px-3 py-2"></th>
+                                    <th className="px-3 py-2"></th>
+                                    <th className="px-3 py-2">
+                                        <TextInput />
+                                    </th>
+                                    <th className="px-3 py-2">
+                                        <SelectInput/>
+                                    </th>
+                                    <th className="px-3 py-2"></th>
+                                    <th className="px-3 py-2"></th>
+                                    <th className="px-3 py-2"></th>
+                                    <th className="px-3 py-2 text-right"></th>
+                                </tr>
+                                </thead>
                                 <tbody>
                                 {projects.data.map((project) => (
-                                    <tr className="border-b">
+                                    <tr key={project.id} className="border-b">
                                         <td className="px-3 py-2">{project.id}</td>
                                         <td className="px-3 py-2">
                                             <img src={project.image_path} style={{width: 60}}/>
                                         </td>
                                         <td className="px-3 py-2">{project.name}</td>
-                                        <td className="px-3 py-2">{project.status}</td>
+                                        <td className="px-3 py-2">
+                                            <span
+                                                className={"px-2 py-1 text-white rounded " + PROJECT_STATUS_CLASS_MAP[project.status]}>
+                                                {PROJECT_STATUS_TEXT_MAP[project.status]}
+                                            </span>
+                                        </td>
                                         <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
                                         <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
                                         <td className="px-3 py-2">{project.createdBy.name}</td>

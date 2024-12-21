@@ -15,8 +15,7 @@ export default function Pagination({links}){
                     dangerouslySetInnerHTML={{__html: link.label}}
                 >
                 </Link>
+            ))}
+        </nav>
     )
-)}
-</nav>
-)
 }
