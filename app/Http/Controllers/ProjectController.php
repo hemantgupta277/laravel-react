@@ -14,9 +14,18 @@ class ProjectController extends Controller
 
     public function index(): Response|ResponseFactory
     {
-        $projects = Project::query()->paginate(10)->onEachSide(1);
+        $query = Project::query();
+        if(request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }if (request('status')) {
+            $query->where('status', request('status'));
+        }
+        $sort_field = request('sort_field', 'created_at');
+        $sort_order = request('sort_order', 'desc');
+        $projects = $query->orderBy($sort_field, $sort_order)->paginate(10)->onEachSide(1);
         return inertia('Project/Index',[
-            'projects' => ProjectResource::collection($projects)
+            'projects' => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?:null
         ]);
     }
 
