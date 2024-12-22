@@ -16,9 +16,10 @@ class TaskController extends Controller
         $query = Task::query();
         if(request('name')) {
             $query->where('name', 'like', '%' . request('name') . '%');
-        }if (request('status')) {
-        $query->where('status', request('status'));
-    }
+        }
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
         $sort_field = request('sort_field', 'created_at');
         $sort_order = request('sort_order', 'desc');
         $tasks = $query->orderBy($sort_field, $sort_order)->paginate(10)->onEachSide(1);

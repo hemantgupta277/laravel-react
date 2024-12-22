@@ -32,9 +32,17 @@ export default function Index({auth, projects, queryParams = null}){
         <AuthenticatedLayout
             user={auth.user}
             header={
+            <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Projects
                 </h2>
+                <Link
+                    href={route('project.create')}
+                    className="text-white bg-pink-700 px-3 py-2 rounded-lg font-bold"
+                >
+                    Add New
+                </Link>
+            </div>
             }
         >
             <Head title="Projects" />
@@ -43,7 +51,6 @@ export default function Index({auth, projects, queryParams = null}){
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            {/*<pre>{JSON.stringify(projects, undefined, 2)}</pre>*/}
                             <table className="w-full text-sm text-left text-gray-500 rtl:text-right">
                                 <thead className="text-xs bg-gray-50 text-gray-700 uppercase border-b-2">
                                 <tr className="text-nowrap">
@@ -130,13 +137,17 @@ export default function Index({auth, projects, queryParams = null}){
                                         <td className="px-3 py-2">
                                             <img src={project.image_path} style={{width: 60}}/>
                                         </td>
-                                        <td className="px-3 py-2">{project.name}</td>
                                         <td className="px-3 py-2">
+                                            <Link href={route('project.show', project.id)}>
+                                                {project.name}
+                                            </Link>
+                                        </td>
+                                        <th className="px-3 py-2 text-black hover:underline">
                                             <span
                                                 className={"px-2 py-1 text-white rounded " + PROJECT_STATUS_CLASS_MAP[project.status]}>
                                                 {PROJECT_STATUS_TEXT_MAP[project.status]}
                                             </span>
-                                        </td>
+                                        </th>
                                         <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
                                         <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
                                         <td className="px-3 py-2">{project.createdBy.name}</td>
@@ -154,7 +165,6 @@ export default function Index({auth, projects, queryParams = null}){
                                 ))}
                                 </tbody>
                             </table>
-                            {/*<pre>{JSON.stringify(projects.meta.links, undefined, 2)}</pre>*/}
                             <Pagination links={projects.meta.links}/>
                         </div>
                     </div>
