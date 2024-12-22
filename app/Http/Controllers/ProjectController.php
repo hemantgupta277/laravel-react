@@ -32,9 +32,9 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Project/Create');
     }
 
     public function store(StoreProjectRequest $request)
