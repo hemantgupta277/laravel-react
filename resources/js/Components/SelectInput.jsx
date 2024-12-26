@@ -6,15 +6,11 @@ export default forwardRef(function SelectInput(
 ) {
     const localRef = useRef(null);
 
-    useImperativeHandle(ref, () => ({
-        focus: () => localRef.current?.focus(),
-    }));
-
     return (
         <select
             {...props}
             className={
-                'rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ' +
+                'rounded-md border-gray-300 shadow-sm focus:border-pink-700 focus:ring-pink-700 ' +
                 className
             }
             ref={localRef}

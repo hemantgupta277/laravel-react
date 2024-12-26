@@ -10,7 +10,7 @@ export default function TasksTable({tasks, queryParams = null, showProjectColumn
     const searchFieldChanged = (name, value) => {
         if (value) queryParams[name] = value;
         else delete queryParams[name];
-        router.get(route('task.index'), queryParams);
+        router.get(route(routeParam, projectParam), queryParams);
     }
     const onKeyPress = (name, e) => {
         if (e.key !== 'Enter') return;
