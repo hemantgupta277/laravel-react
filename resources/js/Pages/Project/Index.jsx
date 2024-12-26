@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import TableHeading from "@/Components/TableHeading.jsx";
 
-export default function Index({auth, projects, queryParams = null}){
+export default function Index({auth, projects, queryParams = null, success}){
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) queryParams[name] = value;
@@ -28,6 +28,12 @@ export default function Index({auth, projects, queryParams = null}){
         }
         router.get(route('project.index'), queryParams);
     }
+    const deleteProject = (project) => {
+        if(!window.confirm('Are you sure you want to delete this project?')){
+            return;
+        }
+        router.delete(route('project.destroy', project.id))
+    }
     return(
         <AuthenticatedLayout
             user={auth.user}
@@ -38,7 +44,7 @@ export default function Index({auth, projects, queryParams = null}){
                 </h2>
                 <Link
                     href={route('project.create')}
-                    className="text-white bg-pink-700 px-3 py-2 rounded-lg font-bold"
+                    className="text-white bg-pink-700 px-3 py-1.5 rounded-lg font-bold hover:bg-pink-800"
                 >
                     Add New
                 </Link>
@@ -49,6 +55,11 @@ export default function Index({auth, projects, queryParams = null}){
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    {success && (
+                        <div className="bg-green-400 text-white rounded shadow-md py-2 px-4 mb-4">
+                            {success}
+                        </div>
+                    )}
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <table className="w-full text-sm text-left text-gray-500 rtl:text-right">
@@ -151,15 +162,16 @@ export default function Index({auth, projects, queryParams = null}){
                                         <td className="px-3 py-2 text-nowrap">{project.created_at}</td>
                                         <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
                                         <td className="px-3 py-2">{project.createdBy.name}</td>
-                                        <td className="px-3 py-2">
+                                        <td className="px-3 py-2 text-nowrap">
                                             <Link href={route('project.edit', project.id)}
                                                   className="text-blue-600 mx-1 hover:underline">
                                                 Edit
                                             </Link>
-                                            <Link href={route('project.destroy', project.id)}
+                                            <button
+                                                onClick={(e) => deleteProject(project)}
                                                   className="text-red-600 mx-1 hover:underline">
                                                 Delete
-                                            </Link>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

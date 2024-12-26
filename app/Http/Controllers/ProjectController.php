@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -28,7 +29,8 @@ class ProjectController extends Controller
         $projects = $query->orderBy($sort_field, $sort_order)->paginate(10)->onEachSide(1);
         return inertia('Project/Index',[
             'projects' => ProjectResource::collection($projects),
-            'queryParams' => request()->query() ?:null
+            'queryParams' => request()->query() ?:null,
+            'success' => session('success'),
         ]);
     }
 
@@ -39,7 +41,20 @@ class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request)
     {
-        //
+        $image_path = null;
+        if($request->file('image')){
+            $image_path = $request->file('image')->store('images','public');
+        }
+        Project::create([
+            'image_path' => $image_path,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'status' => $request->input('status'),
+            'due_date' => $request->input('due_date'),
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id()
+        ]);
+        return to_route("project.index")->with('success', 'Project created successfully.');
     }
 
     public function show(Project $project)
@@ -75,6 +90,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        //
+        $project->tasks()->delete();
+        $project->delete();
+        return to_route("project.index")->with('success', 'Project '. $project->name. ' deleted successfully.');
     }
 }
