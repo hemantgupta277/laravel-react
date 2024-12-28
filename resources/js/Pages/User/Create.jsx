@@ -1,24 +1,22 @@
-import {Head, Link, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import {Head, Link, useForm} from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
-export default function Edit({auth, project}) {
+export default function Create({auth}){
     const {data, setData, post, errors, reset} = useForm({
         image: '',
-        image_path: project.image_path || '',
-        name: project.name || '',
-        status: project.status || '',
-        description: project.description || '',
-        due_date: project.due_date || '',
-        _method: 'PUT'
+        name: '',
+        status: '',
+        description: '',
+        due_date: ''
     })
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route("project.update", project.id));
+        post(route("project.store"));
     }
     return (
         <AuthenticatedLayout
@@ -26,7 +24,7 @@ export default function Edit({auth, project}) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Edit Project "{project.name}"
+                        Create Project
                     </h2>
                 </div>
             }
@@ -39,9 +37,6 @@ export default function Edit({auth, project}) {
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <div className="mb-4">
-                                <img src={project.image_path} className="w-64"/>
-                            </div>
                             <div>
                                 <InputLabel htmlFor="project_image_path" value="Project Image"/>
                                 <TextInput
