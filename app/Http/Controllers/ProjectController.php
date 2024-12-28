@@ -9,6 +9,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -80,12 +81,28 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        //
+        return inertia('Project/Edit', [
+            'project' => new ProjectResource($project),
+        ]);
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $image_path = null;
+        if($request->file('image')){
+            if($project->image_path)
+                Storage::disk('public')->delete($project->image_path);
+            $image_path = $request->file('image')->store('images','public');
+        }
+        $project->update([
+            'image_path' => $image_path,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'status' => $request->input('status'),
+            'due_date' => $request->input('due_date'),
+            'updated_by' => Auth::id()
+        ]);
+        return to_route("project.index")->with('success', 'Project updated successfully.');
     }
 
     public function destroy(Project $project)
