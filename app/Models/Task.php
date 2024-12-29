@@ -10,6 +10,7 @@ class Task extends Model
 {
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
+    protected $fillable = ['name', 'description', 'image_path', 'assigned_user_id', 'project_id', 'priority', 'status', 'due_date', 'created_by', 'updated_by'];
 
     public function createdBy(): BelongsTo
     {

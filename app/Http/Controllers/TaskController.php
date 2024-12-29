@@ -31,14 +31,15 @@ class TaskController extends Controller
         $tasks = $query->orderBy($sort_field, $sort_order)->paginate(10)->onEachSide(1);
         return inertia('Task/Index',[
             'tasks' => TaskResource::collection($tasks),
-            'queryParams' => request()->query() ?:null
+            'queryParams' => request()->query() ?:null,
+            'success' => session('success'),
         ]);
     }
 
     public function create(): Response|ResponseFactory
     {
-        $projects = Project::all();
-        $users = User::all();
+        $projects = Project::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
         return inertia('Task/Create', [
             'projects' => ProjectResource::collection($projects),
             'users' => UserResource::collection($users),
@@ -48,14 +49,19 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $data = $request->validated();
-        $image = $data['image']??null;
+        $data['image_path'] = null;
+        if($request->file('image')){
+            $data['image_path'] = $request->file('image')->store('images','public');
+            unset($data['image']);
+        } else {
+            unset($data['image']);
+        }
         $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();
-        if($image) {
-            $data['image_path'] = $image->store('tasks', 'public');
-        }
+        $assigned_user = $data['assigned_user_id']??null;
+        if(!$assigned_user) $assigned_user = Auth::id();
         Task::create($data);
-        return to_route('tasks.index')->with('success', 'Task created successfully.');
+        return to_route('task.index')->with('success', 'Task created successfully.');
     }
 
     public function show(Task $task)

@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link} from '@inertiajs/react';
 import TasksTable from "@/Pages/Task/TasksTable.jsx";
 
-export default function Index({auth, tasks, queryParams = null}){
+export default function Index({auth, tasks, queryParams = null, success}){
     queryParams = queryParams || {};
     return(
         <AuthenticatedLayout
@@ -24,6 +24,11 @@ export default function Index({auth, tasks, queryParams = null}){
             <Head title="Tasks"/>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    {success && (
+                        <div className="bg-green-400 text-white rounded shadow-md py-2 px-4 mb-4">
+                            {success}
+                        </div>
+                    )}
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <TasksTable tasks={tasks} queryParams={queryParams} routeParam={"task.index"}/>

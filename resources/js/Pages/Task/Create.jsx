@@ -131,7 +131,7 @@ export default function Create({auth, projects, users}){
                                 >
                                     <option value="">Select Priority</option>
                                     <option value="low">Low</option>
-                                    <option value="mwdium">Medium</option>
+                                    <option value="medium">Medium</option>
                                     <option value="high">High</option>
                                 </SelectInput>
                                 <InputError message={errors.priority} className="mt-2"/>
@@ -146,9 +146,9 @@ export default function Create({auth, projects, users}){
                                     onChange={(e) => setData('assigned_user_id', e.target.value)}
                                 >
                                     <option value="">Select User</option>
-                                    <option value="low">Low</option>
-                                    <option value="mwdium">Medium</option>
-                                    <option value="high">High</option>
+                                    {users.data.map(user => (
+                                        <option value={user.id} key={user.id}>{user.name} | {user.email}</option>
+                                    ))}
                                 </SelectInput>
                                 <InputError message={errors.assigned_user_id} className="mt-2"/>
                             </div>
