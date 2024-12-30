@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
-import TasksTable from "@/Pages/Task/TasksTable.jsx";
+import {TASK_PRIORITY_CLASS_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
+import {Link} from "@inertiajs/react";
 
 export default function Show({auth, task, tasks = null, queryParams}){
     return(
@@ -37,12 +37,33 @@ export default function Show({auth, task, tasks = null, queryParams}){
                                         </div>
                                     </div>
                                     <div className="mt-4">
-                                        <label className="font-bold text-lg">Created By</label>
-                                        <p>{task.createdBy.name}</p>
+                                        <label className="font-bold text-lg">Task Priority</label>
+                                        <div className="mt-1">
+                                            <span
+                                                className={"font-bold text-white rounded-lg px-3 py-2 capitalize " + TASK_PRIORITY_CLASS_MAP[task.priority]}>{task.priority}</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Project</label>
+                                        <div className="mt-1">
+                                            <Link href={route('project.show', task.project.id)}>
+                                                {task.project.name}
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                                 <div>
                                     <div>
+                                        <label className="font-bold text-lg">Created By</label>
+                                        <p>{task.createdBy.name}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Assigned User</label>
+                                        <div className="mt-1">
+                                            <p>{task.assignedUser.name}</p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4">
                                         <label className="font-bold text-lg">Due Date</label>
                                         <p>{task.due_date}</p>
                                     </div>
@@ -60,21 +81,6 @@ export default function Show({auth, task, tasks = null, queryParams}){
                                 <label className="font-bold text-lg">Description</label>
                                 <p>{task.description}</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="pb-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <TasksTable
-                                tasks={tasks}
-                                queryParams={queryParams}
-                                showTaskColumn={false}
-                                routeParam={"task.show"}
-                                taskParam={task.id}
-                            />
                         </div>
                     </div>
                 </div>

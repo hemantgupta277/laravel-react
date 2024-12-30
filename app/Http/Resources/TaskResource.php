@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskResource extends JsonResource
 {
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *
@@ -20,15 +21,17 @@ class TaskResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'due_date' => (new Carbon($this->due_date))->format('d-m-Y'),
+            'due_date' => (new Carbon($this->due_date))->format('Y-m-d'),
             'status' => $this->status,
             'priority' => $this->priority,
             'image_path' => $this->image_path ? Storage::url($this->image_path) : '',
             'project' => new ProjectResource($this->project),
+            'project_id' => $this->project_id,
             'created_at' => (new Carbon($this->created_at))->format('d-m-Y'),
             'createdBy' => new UserResource($this->createdBy),
             'updatedBy' => new UserResource($this->updatedBy),
-            'assignedUser' => new UserResource(($this->assignedUser))
+            'assignedUser' => new UserResource(($this->assignedUser)),
+            'assigned_user_id' => $this->assigned_user_id
         ];
     }
 }

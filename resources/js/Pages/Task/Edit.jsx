@@ -6,14 +6,17 @@ import InputError from "@/Components/InputError.jsx";
 import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
-export default function Edit({auth, task}) {
+export default function Edit({auth, task, projects, users}) {
     const {data, setData, post, errors, reset} = useForm({
         image: '',
         image_path: task.image_path || '',
         name: task.name || '',
-        status: task.status || '',
         description: task.description || '',
         due_date: task.due_date || '',
+        status: task.status || '',
+        priority: task.priority || '',
+        project_id: task.project_id || '',
+        assigned_user_id: task.assigned_user_id || '',
         _method: 'PUT'
     })
     const onSubmit = (e) => {
@@ -52,6 +55,23 @@ export default function Edit({auth, task}) {
                                     onChange={(e) => setData('image', e.target.files[0])}
                                 />
                                 <InputError message={errors.image} className="mt-2"/>
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel htmlFor="task_project_id" value="Project"/>
+                                <SelectInput
+                                    id="task_project_id"
+                                    name="project_id"
+                                    value={data.project_id}
+                                    className="mt-1 block w-full border"
+                                    onChange={(e) => setData('project_id', e.target.value)}
+                                >
+                                    <option value="">Select Project</option>
+                                    {projects.data.map(project => (
+                                        <option value={project.id} key={project.id}>{project.name}</option>
+                                    ))}
+
+                                </SelectInput>
+                                <InputError message={errors.project_id} className="mt-2"/>
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="task_name" value="Task Name"/>
@@ -104,6 +124,38 @@ export default function Edit({auth, task}) {
                                     <option value="completed">Completed</option>
                                 </SelectInput>
                                 <InputError message={errors.status} className="mt-2"/>
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel htmlFor="task_priority" value="Priority"/>
+                                <SelectInput
+                                    id="task_priority"
+                                    name="priority"
+                                    value={data.priority}
+                                    className="mt-1 block w-full border"
+                                    onChange={(e) => setData('priority', e.target.value)}
+                                >
+                                    <option value="">Select Priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </SelectInput>
+                                <InputError message={errors.priority} className="mt-2"/>
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel htmlFor="task_assigned_user" value="Assigned User"/>
+                                <SelectInput
+                                    id="task_assigned_user"
+                                    name="assigned_user_id"
+                                    value={data.assigned_user_id}
+                                    className="mt-1 block w-full border"
+                                    onChange={(e) => setData('assigned_user_id', e.target.value)}
+                                >
+                                    <option value="">Select User</option>
+                                    {users.data.map(user => (
+                                        <option value={user.id} key={user.id}>{user.name} | {user.email}</option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.assigned_user_id} className="mt-2"/>
                             </div>
                             <div className="mt-4 text-right">
                                 <Link

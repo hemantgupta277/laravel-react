@@ -27,6 +27,12 @@ export default function TasksTable({tasks, queryParams = null, showProjectColumn
         }
         router.get(route(routeParam, projectParam), queryParams);
     }
+    const deleteTask = (task) =>{
+        if(!window.confirm('Are you sure you want to delete this project?')){
+            return;
+        }
+        router.delete(route('task.destroy', task.id))
+    }
     return (
         <div className="overflow-auto">
             <table className="w-full text-sm text-left text-gray-500 rtl:text-right">
@@ -124,7 +130,11 @@ export default function TasksTable({tasks, queryParams = null, showProjectColumn
                         {showProjectColumn && (
                             <td className="px-3 py-2">{task.project.name}</td>
                         )}
-                        <td className="px-3 py-2">{task.name}</td>
+                        <td className="px-3 py-2">
+                            <Link href={route('task.show', task.id)}>
+                                {task.name}
+                            </Link>
+                        </td>
                         <td className="px-3 py-2">
                             <span
                                 className={"px-2 py-1 text-white rounded " + TASK_STATUS_CLASS_MAP[task.status]}>
@@ -134,15 +144,15 @@ export default function TasksTable({tasks, queryParams = null, showProjectColumn
                         <td className="px-3 py-2 text-nowrap">{task.created_at}</td>
                         <td className="px-3 py-2 text-nowrap">{task.due_date}</td>
                         <td className="px-3 py-2">{task.createdBy.name}</td>
-                        <td className="px-3 py-2">
+                        <td className="px-3 py-2 text-nowrap">
                             <Link href={route('task.edit', task.id)}
                                   className="text-blue-600 mx-1 hover:underline">
                                 Edit
                             </Link>
-                            <Link href={route('task.destroy', task.id)}
+                            <button onClick={(e) => deleteTask(task)}
                                   className="text-red-600 mx-1 hover:underline">
                                 Delete
-                            </Link>
+                            </button>
                         </td>
                     </tr>
                 ))}

@@ -21,3 +21,9 @@ export const TASK_STATUS_TEXT_MAP = {
     'in_progress' : 'In Progress',
     'completed' : 'Completed',
 }
+
+export const TASK_PRIORITY_CLASS_MAP = {
+    'low' : 'bg-green-500',
+    'medium' : 'bg-yellow-500',
+    'high' : 'bg-red-500',
+}
