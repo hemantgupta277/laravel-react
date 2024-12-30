@@ -2,14 +2,22 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {TASK_PRIORITY_CLASS_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
 import {Link} from "@inertiajs/react";
 
-export default function Show({auth, task, tasks = null, queryParams}){
+export default function Show({auth, task}){
     return(
         <AuthenticatedLayout
             user={auth.user}
             header={
+            <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     {`Task "${task.name}"`}
                 </h2>
+                <Link
+                    href={route('task.edit', task.id)}
+                    className="text-white bg-pink-700 px-3 py-1.5 rounded-lg font-bold hover:bg-pink-800"
+                >
+                    Edit
+                </Link>
+            </div>
             }
         >
             <div className="py-12">
