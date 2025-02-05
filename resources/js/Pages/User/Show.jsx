@@ -1,5 +1,4 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP} from "@/constants.jsx";
 import TasksTable from "@/Pages/Task/TasksTable.jsx";
 
 export default function Show({auth, user, tasks = null, queryParams}){
@@ -28,13 +27,6 @@ export default function Show({auth, user, tasks = null, queryParams}){
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">User Name</label>
                                         <p>{user.name}</p>
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="font-bold text-lg">User Status</label>
-                                        <div className="mt-1">
-                                            <span
-                                                className={"font-bold text-white rounded-lg px-3 py-2 " + USER_STATUS_CLASS_MAP[user.status]}>{USER_STATUS_TEXT_MAP[user.status]}</span>
-                                        </div>
                                     </div>
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">Created By</label>
